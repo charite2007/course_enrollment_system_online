@@ -1,0 +1,21 @@
+{
+  "name": "course_enrollment_system_online",
+  "version": "1.0.0",
+  "description": "The project has two parts deployed separately: - **Backend (API)** → [Railway](https://railway.app) — free tier available - **Frontend (React)** → [Vercel](https://vercel.com) — free tier available - **Database** → [MongoDB Atlas](https://cloud.mongodb.com) — free 512MB cluster",
+  "homepage": "https://github.com/charite2007/course_enrollment_system_online#readme",
+  "bugs": {
+    "url": "https://github.com/charite2007/course_enrollment_system_online/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charite2007/course_enrollment_system_online.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+   "build":"npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+   "start":"npm run start --prefix backend"
+  }
+}
