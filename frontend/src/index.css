@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  --brand: 24 95% 53%;
+  --brand-2: 15 85% 45%;
+  --brand-glow: 24 95% 53%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #080810;
+  color: #f0f0f5;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Toast slide-in animation */
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: slideInUp .2s ease-out both; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.22); }
+
+/* Auth page animated gradient background */
+.auth-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, hsla(24,95%,53%,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, hsla(260,80%,60%,.10) 0%, transparent 60%),
+    #080810;
+}
+
+/* Glowing card */
+.glow-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 24px 64px -20px rgba(0,0,0,.8),
+    0 0 80px -30px hsla(24,95%,53%,.15);
+  backdrop-filter: blur(12px);
+}
+
+/* Input focus glow */
+.input-glow:focus {
+  border-color: hsl(var(--brand)) !important;
+  box-shadow: 0 0 0 3px hsla(24,95%,53%,.18);
+  outline: none;
+}
+
+/* Brand button */
+.btn-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, hsl(24,95%,55%), hsl(15,85%,45%));
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.875rem;
+  border-radius: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: filter .15s, transform .1s;
+  box-shadow: 0 4px 20px -6px hsla(24,95%,53%,.5);
+}
+.btn-brand:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+.btn-brand:active:not(:disabled) { transform: translateY(0); }
+.btn-brand:disabled { opacity: .5; cursor: not-allowed; }
