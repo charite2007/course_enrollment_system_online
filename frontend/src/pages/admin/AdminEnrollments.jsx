@@ -50,18 +50,18 @@ export default function AdminEnrollments() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search student or course..."
-          className="w-64 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/25 outline-none focus:border-orange-500/60 transition"
+          className="w-full sm:w-64 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/25 outline-none focus:border-orange-500/60 transition"
         />
       </div>
 
       {/* Filter tabs */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex gap-2 overflow-x-auto pb-1">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setFilter(t.key)}
             className={[
-              "rounded-xl px-4 py-2 text-xs font-bold transition",
+              "shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition",
               filter === t.key
                 ? "bg-orange-500/20 border border-orange-500/30 text-orange-400"
                 : "border border-white/10 bg-white/5 text-white/40 hover:bg-white/8",

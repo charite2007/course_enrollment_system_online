@@ -40,9 +40,9 @@ export function AuthProvider({ children }) {
         return data.user;
       },
       async logout() {
-        await authApi.logout();
         authApi.setUser(null);
         setUserState(null);
+        try { await authApi.logout(); } catch { /* ignore */ }
       },
       setUser(nextUser) {
         authApi.setUser(nextUser);

@@ -5,9 +5,10 @@ import Sidebar from "./Sidebar";
 export default function Layout() {
   const location = useLocation();
   return (
-    <div className="flex min-h-dvh bg-[#0b0b0b]">
+    <div className="flex min-h-dvh" style={{ background: "var(--bg-base)" }}>
       <Sidebar />
-      <main className="flex-1 overflow-y-auto bg-[#0f0f10] p-4 pt-16 sm:p-6 lg:pt-6">
+      {/* lg:pl-64 offsets content from the fixed sidebar */}
+      <main className="flex-1 min-w-0 overflow-y-auto p-3 pt-14 sm:p-5 lg:pt-5 lg:pl-68" style={{ background: "var(--bg-surface)" }}>
         <div className="mx-auto max-w-6xl">
           <AnimatePresence mode="wait">
             <motion.div
@@ -25,4 +26,3 @@ export default function Layout() {
     </div>
   );
 }
-

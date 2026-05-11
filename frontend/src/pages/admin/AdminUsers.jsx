@@ -86,7 +86,7 @@ export default function AdminUsers() {
             {items.length} total · <span className="text-orange-400">{adminCount} admin{adminCount !== 1 ? "s" : ""}</span> · {studentCount} student{studentCount !== 1 ? "s" : ""}
           </p>
         </div>
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name or email..." className="w-64 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/25 outline-none focus:border-orange-500/60 transition" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name or email..." className="w-full sm:w-64 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/25 outline-none focus:border-orange-500/60 transition" />
       </div>
 
       <div className="rounded-2xl border border-white/8 bg-white/3 overflow-hidden">

@@ -4,27 +4,44 @@ import { motion } from "framer-motion";
 import { enrollments, users } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
-};
+const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.09 } } };
+const fadeUp  = { hidden: { opacity: 0, y: 22 }, show: { opacity: 1, y: 0, transition: { duration: 0.38, ease: "easeOut" } } };
 
-function StatCard({ label, value, icon, color }) {
+const STAT_META = [
+  { key: "enrolledCount",    label: "Enrolled",    icon: "📚", accent: "hsla(217,91%,60%,.14)", glow: "hsla(217,91%,60%,.3)",  text: "text-blue-400"    },
+  { key: "inProgressCount",  label: "In Progress", icon: "⚡", accent: "hsla(24,95%,53%,.14)",  glow: "hsla(24,95%,53%,.3)",   text: "text-orange-400"  },
+  { key: "certificatesCount",label: "Certificates",icon: "🏆", accent: "hsla(152,69%,50%,.14)", glow: "hsla(152,69%,50%,.3)",  text: "text-emerald-400" },
+];
+
+function StatCard({ label, value, icon, accent, glow, text }) {
   return (
-    <motion.div variants={item} className={`rounded-2xl border p-5 ${color}`}>
-      <div className="flex items-center justify-between">
-        <div className="text-xs font-bold uppercase tracking-widest text-white/40">{label}</div>
-        <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 300, delay: 0.3 }} className="text-2xl">
+    <motion.div
+      variants={fadeUp}
+      whileHover={{ y: -3, boxShadow: `0 16px 40px -12px ${glow}` }}
+      className="stat-card"
+      style={{ "--accent-glow": accent }}
+    >
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="section-label mb-2">{label}</p>
+          <motion.p
+            initial={{ opacity: 0, scale: .8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: .35, type: "spring", stiffness: 200 }}
+            className={`text-3xl font-black tracking-tight ${text}`}
+          >
+            {value ?? <span className="skeleton inline-block h-8 w-10 rounded-lg" />}
+          </motion.p>
+        </div>
+        <motion.span
+          initial={{ scale: 0, rotate: -20 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: .25, type: "spring", stiffness: 260 }}
+          className="text-3xl"
+        >
           {icon}
         </motion.span>
       </div>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-3 text-3xl font-extrabold text-white">
-        {value ?? "—"}
-      </motion.div>
     </motion.div>
   );
 }
@@ -44,70 +61,110 @@ export default function StudentDashboard() {
   }, []);
 
   const inProgress = my.filter((e) => e.progress > 0 && e.progress < 100);
-  const notStarted = my.filter((e) => e.progress === 0);
+  const notStarted  = my.filter((e) => e.progress === 0);
 
   return (
-    <div className="space-y-8">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white">
+    <div className="space-y-5">
+      {/* Greeting */}
+      <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .32 }}>
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
           Welcome back, <span className="text-orange-400">{user?.Fullname?.split(" ")[0]}</span> 👋
         </h1>
-        <p className="mt-1 text-sm text-white/40">Here's your learning overview.</p>
+        <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>Here's your learning overview for today.</p>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Enrolled" value={stats?.enrolledCount} icon="📚" color="border-blue-500/20 bg-blue-500/5" />
-        <StatCard label="In Progress" value={stats?.inProgressCount} icon="⚡" color="border-orange-500/20 bg-orange-500/5" />
-        <StatCard label="Certificates" value={stats?.certificatesCount} icon="🏆" color="border-emerald-500/20 bg-emerald-500/5" />
+      {/* Stats */}
+      <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-3 gap-2 sm:gap-3">
+        {STAT_META.map((s) => <StatCard key={s.key} {...s} value={stats?.[s.key]} />)}
       </motion.div>
 
+      {/* Continue Learning */}
       {inProgress.length > 0 && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .2 }}>
           <div className="mb-3 flex items-center justify-between">
-            <div className="text-xs font-extrabold uppercase tracking-widest text-white/30">Continue Learning</div>
-            <button onClick={() => navigate("/my-courses")} className="text-xs font-bold text-orange-400 hover:underline">View all →</button>
+            <span className="section-label">Continue Learning</span>
+            <button onClick={() => navigate("/my-courses")} className="text-xs font-bold text-orange-400 hover:text-orange-300 transition">View all →</button>
           </div>
-          <motion.div variants={container} initial="hidden" animate="show" className="grid gap-4 md:grid-cols-2">
+          <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-3 md:grid-cols-2">
             {inProgress.slice(0, 4).map((en) => (
-              <motion.div key={en._id} variants={item} whileHover={{ scale: 1.02 }} className="rounded-2xl border border-white/8 bg-white/3 p-5 flex flex-col gap-3 transition">
-                <div className="text-sm font-extrabold text-white">{en.courseId?.title}</div>
-                <div className="text-xs text-white/40">👤 {en.courseId?.instructor}</div>
-                <div>
-                  <div className="flex justify-between text-[10px] text-white/30 mb-1"><span>Progress</span><span>{en.progress}%</span></div>
-                  <div className="h-1.5 w-full rounded-full bg-white/10">
-                    <motion.div initial={{ width: 0 }} animate={{ width: `${en.progress}%` }} transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }} className="h-1.5 rounded-full bg-orange-400" />
+              <motion.div
+                key={en._id}
+                variants={fadeUp}
+                whileHover={{ y: -2 }}
+                className="card p-4 flex flex-col gap-2 cursor-pointer"
+                onClick={() => navigate(`/lesson/${en.courseId?._id}`)}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-500/15 text-lg">📖</div>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-extrabold text-white">{en.courseId?.title}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "var(--text-3)" }}>👤 {en.courseId?.instructor}</p>
                   </div>
                 </div>
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate(`/lesson/${en.courseId?._id}`)} className="btn-brand rounded-xl py-2 text-xs">Continue →</motion.button>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      )}
-
-      {notStarted.length > 0 && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-          <div className="mb-3 text-xs font-extrabold uppercase tracking-widest text-white/30">Not Started Yet</div>
-          <motion.div variants={container} initial="hidden" animate="show" className="grid gap-3 md:grid-cols-2">
-            {notStarted.slice(0, 2).map((en) => (
-              <motion.div key={en._id} variants={item} whileHover={{ scale: 1.02 }} className="flex items-center justify-between gap-4 rounded-2xl border border-white/8 bg-white/3 px-5 py-4 transition">
                 <div>
-                  <div className="text-sm font-semibold text-white">{en.courseId?.title}</div>
-                  <div className="text-xs text-white/40">{en.courseId?.level} · {en.courseId?.category}</div>
+                  <div className="flex justify-between text-[11px] mb-1.5" style={{ color: "var(--text-3)" }}>
+                    <span>Progress</span><span className="font-bold text-orange-400">{en.progress}%</span>
+                  </div>
+                  <div className="progress-track">
+                    <motion.div
+                      className="progress-fill"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${en.progress}%` }}
+                      transition={{ duration: .9, ease: "easeOut", delay: .3 }}
+                    />
+                  </div>
                 </div>
-                <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }} onClick={() => navigate(`/lesson/${en.courseId?._id}`)} className="shrink-0 rounded-xl border border-orange-500/30 bg-orange-500/10 px-3 py-1.5 text-xs font-bold text-orange-400 hover:bg-orange-500/20 transition">Start</motion.button>
+                <button className="btn-brand rounded-xl py-2 text-xs mt-auto" onClick={(e) => { e.stopPropagation(); navigate(`/lesson/${en.courseId?._id}`); }}>
+                  Continue →
+                </button>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
       )}
 
+      {/* Not Started */}
+      {notStarted.length > 0 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .3 }}>
+          <p className="section-label mb-3">Not Started Yet</p>
+          <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-2 md:grid-cols-2">
+            {notStarted.slice(0, 2).map((en) => (
+              <motion.div
+                key={en._id}
+                variants={fadeUp}
+                whileHover={{ y: -2 }}
+                className="card flex items-center justify-between gap-3 px-4 py-3"
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-white">{en.courseId?.title}</p>
+                  <p className="text-xs mt-0.5" style={{ color: "var(--text-3)" }}>{en.courseId?.level} · {en.courseId?.category}</p>
+                </div>
+                <button
+                  onClick={() => navigate(`/lesson/${en.courseId?._id}`)}
+                  className="shrink-0 rounded-xl border border-orange-500/30 bg-orange-500/10 px-4 py-1.5 text-xs font-bold text-orange-400 hover:bg-orange-500/20 transition"
+                >
+                  Start
+                </button>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Empty state */}
       {my.length === 0 && (
-        <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl border border-white/8 bg-white/3 p-12 text-center">
-          <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }} className="text-4xl mb-3">🎓</motion.div>
-          <div className="text-sm font-extrabold text-white">Start your learning journey</div>
-          <div className="mt-1 text-sm text-white/40">Browse courses and enroll to get started.</div>
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={() => navigate("/find-courses")} className="btn-brand mt-5 rounded-xl px-6 py-2.5 text-sm">Find Courses</motion.button>
+        <motion.div
+          initial={{ opacity: 0, scale: .97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: .2 }}
+          className="card p-10 text-center"
+        >
+          <div className="animate-float text-5xl mb-4">🎓</div>
+          <p className="text-base font-extrabold text-white">Start your learning journey</p>
+          <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>Browse courses and enroll to get started.</p>
+          <button onClick={() => navigate("/find-courses")} className="btn-brand mt-6 rounded-xl px-8 py-2.5 text-sm">
+            Browse Courses
+          </button>
         </motion.div>
       )}
     </div>

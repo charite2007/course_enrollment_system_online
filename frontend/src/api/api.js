@@ -82,6 +82,10 @@ export const users = {
 };
 
 export const courses = {
+  async getPublic() {
+    const { data } = await api.get("/api/courses/public");
+    return data;
+  },
   async getAll() {
     const { data } = await api.get("/api/courses");
     return data;
@@ -135,6 +139,10 @@ export const enrollments = {
   },
   async getAll() {
     const { data } = await api.get("/api/enrollments/all");
+    return data;
+  },
+  async unenroll(courseId) {
+    const { data } = await api.delete(`/api/enrollments/${courseId}`);
     return data;
   },
 };

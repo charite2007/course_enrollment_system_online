@@ -33,7 +33,7 @@ export default function CourseDetails() {
       .catch(() => toast("Failed to load course", "error"))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
-  }, [id]);
+  }, [id, toast]);
 
   async function onEnroll() {
     setBusy(true);

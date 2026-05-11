@@ -3,6 +3,7 @@ import { protection, adminOnly } from "../middleware/authorMiddleware.js";
 import {
   getCourses,
   getCourse,
+  getPublicCourses,
   createCourse,
   updateCourse,
   deleteCourse,
@@ -14,6 +15,7 @@ import {
 const router = Router();
 
 router.get("/", protection, getCourses);
+router.get("/public", getPublicCourses);
 router.get("/:id", protection, getCourse);
 router.post("/", protection, adminOnly, createCourse);
 router.put("/:id", protection, adminOnly, updateCourse);

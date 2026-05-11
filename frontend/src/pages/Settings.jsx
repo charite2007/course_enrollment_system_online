@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { users } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useTheme } from "../context/ThemeContext";
 
 const inputCls = "w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-white/25 outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/15 transition disabled:opacity-40";
 
@@ -17,6 +18,7 @@ function Field({ label, children }) {
 export default function Settings() {
   const { user, setUser } = useAuth();
   const toast = useToast();
+  const { theme, setTheme } = useTheme();
   const [profile, setProfile] = useState({ Fullname: "", phone: "", bio: "", photo: "" });
   const [pwd, setPwd] = useState({ currentPassword: "", newPassword: "", confirmNew: "" });
   const [busyProfile, setBusyProfile] = useState(false);
@@ -72,7 +74,7 @@ export default function Settings() {
       </div>
 
       {/* Profile card */}
-      <div className="rounded-2xl border border-white/8 bg-white/3 p-6">
+      <div className="rounded-2xl border border-white/8 bg-white/3 p-4 sm:p-6">
         <div className="mb-5 flex items-center gap-4">
           <div className="grid h-14 w-14 place-items-center rounded-full bg-orange-500/20 text-xl font-extrabold text-orange-400">
             {user?.Fullname?.[0]?.toUpperCase() || "U"}
@@ -112,8 +114,35 @@ export default function Settings() {
         </form>
       </div>
 
+      {/* Theme card */}
+      <div className="rounded-2xl border border-white/8 bg-white/3 p-4 sm:p-6">
+        <div className="mb-5">
+          <div className="font-extrabold text-white">Appearance</div>
+          <div className="mt-1 text-sm text-white/40">Choose your preferred theme.</div>
+        </div>
+        <div className="flex gap-3">
+          {[
+            { value: "dark", label: "Dark", icon: "🌙" },
+            { value: "light", label: "Light", icon: "☀️" },
+          ].map((t) => (
+            <button
+              key={t.value}
+              onClick={() => setTheme(t.value)}
+              className={[
+                "flex flex-1 items-center justify-center gap-2 rounded-xl border py-3 text-sm font-bold transition",
+                theme === t.value
+                  ? "border-orange-500/40 bg-orange-500/10 text-orange-400"
+                  : "border-white/10 bg-white/5 text-white/50 hover:bg-white/10",
+              ].join(" ")}
+            >
+              <span>{t.icon}</span> {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Password card */}
-      <div className="rounded-2xl border border-white/8 bg-white/3 p-6">
+      <div className="rounded-2xl border border-white/8 bg-white/3 p-4 sm:p-6">
         <div className="mb-5">
           <div className="font-extrabold text-white">Change Password</div>
           <div className="mt-1 text-sm text-white/40">Use a strong password with at least 6 characters.</div>

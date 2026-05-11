@@ -6,6 +6,7 @@ import {
   completeLesson,
   getMyCertificates,
   getAllEnrollments,
+  unenrollCourse,
 } from "../controllers/enrollmentController.js";
 
 const router = Router();
@@ -15,6 +16,7 @@ router.get("/certificates", protection, getMyCertificates);
 router.get("/all", protection, adminOnly, getAllEnrollments);
 router.post("/:courseId", protection, enrollCourse);
 router.put("/:courseId/lesson", protection, completeLesson);
+router.delete("/:courseId", protection, unenrollCourse);
 
 export default router;
 

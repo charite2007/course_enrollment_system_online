@@ -2,12 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import passport from "passport";
 
 import connectDb from "./database/db.js";
+import configurePassport from "./middleware/passport.js";
 import authorRouter from "./router/authorRouter.js";
 import userRouter from "./router/userRouter.js";
 import courseRouter from "./router/courseRouter.js";
 import enrollmentRouter from "./router/enrollmentRouter.js";
+import oauthRouter from "./router/oauthRouter.js";
 
 dotenv.config();
 
@@ -32,9 +35,13 @@ app.use(
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
+configurePassport();
+app.use(passport.initialize());
+
 app.get("/health", (req, res) => res.json({ ok: true, env: process.env.NODE_ENV }));
 
 app.use("/api/auth", authorRouter);
+app.use("/api/auth/oauth", oauthRouter);
 app.use("/api/users", userRouter);
 app.use("/api/courses", courseRouter);
 app.use("/api/enrollments", enrollmentRouter);

@@ -4,41 +4,58 @@ import { motion } from "framer-motion";
 import { users, enrollments, courses } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
-const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } } };
+const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
+const fadeUp  = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: .35, ease: "easeOut" } } };
 
-function StatCard({ label, value, icon, color }) {
-  return (
-    <motion.div variants={item} className={`rounded-2xl border p-5 ${color}`}>
-      <div className="flex items-center justify-between">
-        <div className="text-xs font-bold uppercase tracking-widest text-white/40">{label}</div>
-        <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 300, delay: 0.3 }} className="text-2xl">{icon}</motion.span>
-      </div>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-3 text-3xl font-extrabold text-white">{value ?? "—"}</motion.div>
-    </motion.div>
-  );
-}
+const STATS_META = [
+  { key: "usersCount",        label: "Total Users",   icon: "👥", accent: "hsla(217,91%,60%,.14)", glow: "hsla(217,91%,60%,.3)",  text: "text-blue-400"    },
+  { key: "coursesCount",      label: "Courses",       icon: "📖", accent: "hsla(24,95%,53%,.14)",  glow: "hsla(24,95%,53%,.3)",   text: "text-orange-400"  },
+  { key: "enrollmentsCount",  label: "Enrollments",   icon: "📋", accent: "hsla(263,70%,60%,.14)", glow: "hsla(263,70%,60%,.3)",  text: "text-violet-400"  },
+  { key: "certificatesCount", label: "Certificates",  icon: "🏆", accent: "hsla(152,69%,50%,.14)", glow: "hsla(152,69%,50%,.3)",  text: "text-emerald-400" },
+];
 
-function QuickCard({ title, desc, icon, to, color }) {
-  const navigate = useNavigate();
+const QUICK = [
+  { to: "/admin/courses",     title: "Manage Courses",    desc: "Create, edit & delete courses and lessons.", icon: "📖", border: "border-orange-500/20", bg: "bg-orange-500/5", hover: "hover:border-orange-500/40" },
+  { to: "/admin/users",       title: "Manage Users",      desc: "View, promote or remove users.",             icon: "👥", border: "border-blue-500/20",   bg: "bg-blue-500/5",   hover: "hover:border-blue-500/40"   },
+  { to: "/admin/enrollments", title: "View Enrollments",  desc: "Monitor all student enrollments.",           icon: "📋", border: "border-violet-500/20", bg: "bg-violet-500/5", hover: "hover:border-violet-500/40" },
+];
+
+function StatCard({ label, value, icon, accent, glow, text }) {
   return (
-    <motion.button
-      variants={item}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      onClick={() => navigate(to)}
-      className={`group w-full rounded-2xl border p-5 text-left transition ${color}`}
+    <motion.div
+      variants={fadeUp}
+      whileHover={{ y: -3, boxShadow: `0 16px 40px -12px ${glow}` }}
+      className="stat-card"
+      style={{ "--accent-glow": accent }}
     >
-      <div className="text-3xl">{icon}</div>
-      <div className="mt-3 text-sm font-extrabold text-white">{title}</div>
-      <div className="mt-1 text-xs text-white/50">{desc}</div>
-      <div className="mt-4 text-xs font-bold text-orange-400 group-hover:underline">Open →</div>
-    </motion.button>
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="section-label mb-2">{label}</p>
+          <motion.p
+            initial={{ opacity: 0, scale: .8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: .3, type: "spring", stiffness: 200 }}
+            className={`text-3xl font-black tracking-tight ${text}`}
+          >
+            {value ?? <span className="skeleton inline-block h-8 w-10 rounded-lg" />}
+          </motion.p>
+        </div>
+        <motion.span
+          initial={{ scale: 0, rotate: -20 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: .2, type: "spring", stiffness: 260 }}
+          className="text-3xl"
+        >
+          {icon}
+        </motion.span>
+      </div>
+    </motion.div>
   );
 }
 
 export default function AdminDashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [recentEnrollments, setRecentEnrollments] = useState([]);
   const [recentCourses, setRecentCourses] = useState([]);
@@ -57,61 +74,106 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="space-y-8">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white">Admin Dashboard</h1>
-        <p className="mt-1 text-sm text-white/40">Welcome back, <span className="text-orange-400">{user?.Fullname}</span>. Here's what's happening.</p>
+    <div className="space-y-5">
+      {/* Header */}
+      <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .32 }}>
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Admin Dashboard</h1>
+        <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>
+          Welcome back, <span className="text-orange-400 font-bold">{user?.Fullname}</span>. Here's what's happening.
+        </p>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Total Users" value={stats?.usersCount} icon="👥" color="border-blue-500/20 bg-blue-500/5" />
-        <StatCard label="Courses" value={stats?.coursesCount} icon="📖" color="border-orange-500/20 bg-orange-500/5" />
-        <StatCard label="Enrollments" value={stats?.enrollmentsCount} icon="📋" color="border-violet-500/20 bg-violet-500/5" />
-        <StatCard label="Certificates" value={stats?.certificatesCount} icon="🏆" color="border-emerald-500/20 bg-emerald-500/5" />
+      {/* Stats */}
+      <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
+        {STATS_META.map((s) => <StatCard key={s.key} {...s} value={stats?.[s.key]} />)}
       </motion.div>
 
+      {/* Quick Actions */}
       <div>
-        <div className="mb-3 text-xs font-extrabold uppercase tracking-widest text-white/30">Quick Actions</div>
-        <motion.div variants={container} initial="hidden" animate="show" className="grid gap-4 sm:grid-cols-3">
-          <QuickCard to="/admin/courses" title="Manage Courses" desc="Create, edit, delete courses and lessons." icon="📖" color="border-orange-500/20 bg-orange-500/5 hover:border-orange-500/40" />
-          <QuickCard to="/admin/users" title="Manage Users" desc="View, promote, or remove users." icon="👥" color="border-blue-500/20 bg-blue-500/5 hover:border-blue-500/40" />
-          <QuickCard to="/admin/enrollments" title="View Enrollments" desc="Monitor all student enrollments." icon="📋" color="border-violet-500/20 bg-violet-500/5 hover:border-violet-500/40" />
+        <p className="section-label mb-3">Quick Actions</p>
+        <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-3 sm:grid-cols-3">
+          {QUICK.map((q) => (
+            <motion.button
+              key={q.to}
+              variants={fadeUp}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: .97 }}
+              onClick={() => navigate(q.to)}
+              className={`group w-full rounded-2xl border p-4 text-left transition ${q.border} ${q.bg} ${q.hover}`}
+            >
+              <div className="text-2xl mb-2">{q.icon}</div>
+              <p className="text-sm font-extrabold text-white">{q.title}</p>
+              <p className="mt-1 text-xs" style={{ color: "var(--text-3)" }}>{q.desc}</p>
+              <p className="mt-4 text-xs font-bold text-orange-400 group-hover:underline">Open →</p>
+            </motion.button>
+          ))}
         </motion.div>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.35 }} className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/8 bg-white/3 p-5">
-          <div className="mb-4 text-xs font-extrabold uppercase tracking-widest text-white/30">Recent Enrollments</div>
+      {/* Recent Activity */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: .3, duration: .35 }}
+        className="grid gap-4 lg:grid-cols-2"
+      >
+        {/* Recent Enrollments */}
+        <div className="card p-4">
+          <p className="section-label mb-3">Recent Enrollments</p>
           <div className="space-y-2">
-            {recentEnrollments.length === 0 && <div className="text-sm text-white/30">No enrollments yet.</div>}
+            {recentEnrollments.length === 0 && (
+              <p className="text-sm py-4 text-center" style={{ color: "var(--text-3)" }}>No enrollments yet.</p>
+            )}
             {recentEnrollments.map((e, i) => (
-              <motion.div key={e._id} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + i * 0.06 }} className="flex items-center justify-between rounded-xl bg-white/4 px-3 py-2.5">
-                <div>
-                  <div className="text-sm font-semibold text-white">{e.studentId?.Fullname || "—"}</div>
-                  <div className="text-xs text-white/40">{e.courseId?.title || "—"}</div>
+              <motion.div
+                key={e._id}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: .35 + i * .06 }}
+                className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition"
+                style={{ background: "var(--bg-card-hover)" }}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-orange-500/15 text-xs font-extrabold text-orange-400">
+                    {e.studentId?.Fullname?.[0]?.toUpperCase() || "?"}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-white">{e.studentId?.Fullname || "—"}</p>
+                    <p className="truncate text-xs" style={{ color: "var(--text-3)" }}>{e.courseId?.title || "—"}</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs font-bold text-orange-400">{e.progress ?? 0}%</div>
-                  <div className="text-[10px] text-white/30">{e.createdAt ? new Date(e.createdAt).toLocaleDateString() : ""}</div>
+                <div className="shrink-0 text-right">
+                  <p className="text-xs font-bold text-orange-400">{e.progress ?? 0}%</p>
+                  <p className="text-[10px]" style={{ color: "var(--text-3)" }}>{e.createdAt ? new Date(e.createdAt).toLocaleDateString() : ""}</p>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/8 bg-white/3 p-5">
-          <div className="mb-4 text-xs font-extrabold uppercase tracking-widest text-white/30">Recent Courses</div>
+        {/* Recent Courses */}
+        <div className="card p-4">
+          <p className="section-label mb-3">Recent Courses</p>
           <div className="space-y-2">
-            {recentCourses.length === 0 && <div className="text-sm text-white/30">No courses yet.</div>}
+            {recentCourses.length === 0 && (
+              <p className="text-sm py-4 text-center" style={{ color: "var(--text-3)" }}>No courses yet.</p>
+            )}
             {recentCourses.map((c, i) => (
-              <motion.div key={c._id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + i * 0.06 }} className="flex items-center justify-between rounded-xl bg-white/4 px-3 py-2.5">
-                <div>
-                  <div className="text-sm font-semibold text-white">{c.title}</div>
-                  <div className="text-xs text-white/40">{c.instructor}</div>
+              <motion.div
+                key={c._id}
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: .35 + i * .06 }}
+                className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition"
+                style={{ background: "var(--bg-card-hover)" }}
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-white">{c.title}</p>
+                  <p className="truncate text-xs" style={{ color: "var(--text-3)" }}>{c.instructor}</p>
                 </div>
-                <div className="flex gap-1.5">
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50">{c.level}</span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50">{c.price ? `$${c.price}` : "Free"}</span>
+                <div className="shrink-0 flex gap-1.5">
+                  <span className="badge badge-muted">{c.level}</span>
+                  <span className="badge badge-orange">{c.price ? `$${c.price}` : "Free"}</span>
                 </div>
               </motion.div>
             ))}
