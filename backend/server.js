@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import passport from "passport";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import { existsSync } from "fs";
 
 import connectDb from "./database/db.js";
 import configurePassport from "./middleware/passport.js";
@@ -14,6 +17,7 @@ import oauthRouter from "./router/oauthRouter.js";
 
 dotenv.config();
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 // Support multiple allowed origins (comma-separated in CLIENT_ORIGIN)
@@ -45,6 +49,15 @@ app.use("/api/auth/oauth", oauthRouter);
 app.use("/api/users", userRouter);
 app.use("/api/courses", courseRouter);
 app.use("/api/enrollments", enrollmentRouter);
+
+// Serve React frontend in production
+const distPath = join(__dirname, "../frontend/dist");
+if (existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get("*", (req, res) => {
+    res.sendFile(join(distPath, "index.html"));
+  });
+}
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
