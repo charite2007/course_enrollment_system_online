@@ -54,7 +54,7 @@ app.use("/api/enrollments", enrollmentRouter);
 const distPath = join(__dirname, "../frontend/dist");
 if (existsSync(distPath)) {
   app.use(express.static(distPath));
-  app.get("*", (req, res) => {
+  app.get("{*path}", (req, res) => {
     res.sendFile(join(distPath, "index.html"));
   });
 }
