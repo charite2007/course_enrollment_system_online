@@ -74,8 +74,8 @@ export default function Settings() {
       </div>
 
       {/* Profile card */}
-      <div className="rounded-2xl border border-white/8 bg-white/3 p-4 sm:p-6">
-        <div className="mb-5 flex items-center gap-4">
+      <div className="rounded-3xl border border-white/8 bg-white/3 p-5 sm:p-7">
+        <div className="mb-6 flex items-center gap-4">
           <div className="grid h-14 w-14 place-items-center rounded-full bg-orange-500/20 text-xl font-extrabold text-orange-400">
             {user?.Fullname?.[0]?.toUpperCase() || "U"}
           </div>
@@ -115,7 +115,7 @@ export default function Settings() {
       </div>
 
       {/* Theme card */}
-      <div className="rounded-2xl border border-white/8 bg-white/3 p-4 sm:p-6">
+      <div className="rounded-3xl border border-white/8 bg-white/3 p-5 sm:p-7">
         <div className="mb-5">
           <div className="font-extrabold text-white">Appearance</div>
           <div className="mt-1 text-sm text-white/40">Choose your preferred theme.</div>
@@ -142,7 +142,7 @@ export default function Settings() {
       </div>
 
       {/* Password card */}
-      <div className="rounded-2xl border border-white/8 bg-white/3 p-4 sm:p-6">
+      <div className="rounded-3xl border border-white/8 bg-white/3 p-5 sm:p-7">
         <div className="mb-5">
           <div className="font-extrabold text-white">Change Password</div>
           <div className="mt-1 text-sm text-white/40">Use a strong password with at least 6 characters.</div>

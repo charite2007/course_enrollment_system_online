@@ -8,7 +8,7 @@ export default function Layout() {
     <div className="flex min-h-dvh" style={{ background: "var(--bg-base)" }}>
       <Sidebar />
       {/* lg:pl-64 offsets content from the fixed sidebar */}
-      <main className="flex-1 min-w-0 overflow-y-auto p-3 pt-14 sm:p-5 lg:pt-5 lg:pl-68" style={{ background: "var(--bg-surface)" }}>
+      <main className="flex-1 min-w-0 overflow-y-auto p-4 pt-16 sm:p-6 lg:pt-6 lg:pl-80" style={{ background: "var(--bg-surface)" }}>
         <div className="mx-auto max-w-6xl">
           <AnimatePresence mode="wait">
             <motion.div

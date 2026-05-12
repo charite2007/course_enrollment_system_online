@@ -73,7 +73,7 @@ export default function Register() {
 
           <form className="mt-3 space-y-2.5" onSubmit={onSubmit}>
             {[
-              { label: "Full name", value: Fullname, set: setFullname, placeholder: "Jane Doe", type: "text" },
+              { label: "Full name", value: Fullname, set: setFullname, placeholder: "your name", type: "text" },
               { label: "Email address", value: email, set: setEmail, placeholder: "you@example.com", type: "email" },
             ].map(({ label, value, set, placeholder, type }, i) => (
               <motion.div key={label} {...fadeUp(0.16 + i * 0.06)}>

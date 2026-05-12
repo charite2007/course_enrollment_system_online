@@ -71,3 +71,8 @@ export async function logout(req, res) {
   }
 }
 
+export async function getToken(req, res) {
+  const token = req.cookies?.token;
+  if (!token) return res.status(401).json({ message: "Not authorized" });
+  return res.json({ token });
+}

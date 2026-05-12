@@ -47,8 +47,8 @@ export default function Certificates() {
           <motion.div
             key={c._id}
             variants={item}
-            whileHover={{ scale: 1.02, boxShadow: "0 0 40px -10px hsla(24,95%,53%,.25)" }}
-            className="rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/5 to-amber-500/5 p-6 relative overflow-hidden transition"
+            whileHover={{ scale: 1.02, y: -4, boxShadow: "0 0 48px -10px hsla(24,95%,53%,.3)" }}
+            className="rounded-3xl border border-orange-500/20 bg-gradient-to-br from-orange-500/8 to-amber-500/5 p-7 relative overflow-hidden transition"
           >
             {/* Decorative orbs */}
             <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-orange-500/5" />

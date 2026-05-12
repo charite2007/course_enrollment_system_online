@@ -32,6 +32,10 @@ export const auth = {
     const { data } = await api.post("/api/auth/logout");
     return data;
   },
+  async getToken() {
+    const { data } = await api.get("/api/auth/token");
+    return data;
+  },
   getUser() {
     try {
       const raw = localStorage.getItem("user");
@@ -143,6 +147,24 @@ export const enrollments = {
   },
   async unenroll(courseId) {
     const { data } = await api.delete(`/api/enrollments/${courseId}`);
+    return data;
+  },
+};
+
+export const chat = {
+  async getMessages(room = "global") {
+    const { data } = await api.get(`/api/chat?room=${room}`);
+    return data;
+  },
+};
+
+export const people = {
+  async getAll() {
+    const { data } = await api.get("/api/users/people");
+    return data;
+  },
+  async follow(id) {
+    const { data } = await api.put(`/api/users/${id}/follow`);
     return data;
   },
 };

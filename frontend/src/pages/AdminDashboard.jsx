@@ -74,24 +74,24 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .32 }}>
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Admin Dashboard</h1>
-        <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>
+        <p className="mt-2 text-sm" style={{ color: "var(--text-3)" }}>
           Welcome back, <span className="text-orange-400 font-bold">{user?.Fullname}</span>. Here's what's happening.
         </p>
       </motion.div>
 
       {/* Stats */}
-      <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
+      <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4">
         {STATS_META.map((s) => <StatCard key={s.key} {...s} value={stats?.[s.key]} />)}
       </motion.div>
 
       {/* Quick Actions */}
       <div>
-        <p className="section-label mb-3">Quick Actions</p>
-        <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-3 sm:grid-cols-3">
+        <p className="section-label mb-4">Quick Actions</p>
+        <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-4 sm:grid-cols-3">
           {QUICK.map((q) => (
             <motion.button
               key={q.to}
@@ -99,9 +99,9 @@ export default function AdminDashboard() {
               whileHover={{ y: -3 }}
               whileTap={{ scale: .97 }}
               onClick={() => navigate(q.to)}
-              className={`group w-full rounded-2xl border p-4 text-left transition ${q.border} ${q.bg} ${q.hover}`}
+              className={`group w-full rounded-2xl border p-5 text-left transition ${q.border} ${q.bg} ${q.hover}`}
             >
-              <div className="text-2xl mb-2">{q.icon}</div>
+              <div className="text-3xl mb-3">{q.icon}</div>
               <p className="text-sm font-extrabold text-white">{q.title}</p>
               <p className="mt-1 text-xs" style={{ color: "var(--text-3)" }}>{q.desc}</p>
               <p className="mt-4 text-xs font-bold text-orange-400 group-hover:underline">Open →</p>
@@ -115,11 +115,11 @@ export default function AdminDashboard() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: .3, duration: .35 }}
-        className="grid gap-4 lg:grid-cols-2"
+        className="grid gap-6 lg:grid-cols-2"
       >
         {/* Recent Enrollments */}
-        <div className="card p-4">
-          <p className="section-label mb-3">Recent Enrollments</p>
+        <div className="card p-5">
+          <p className="section-label mb-4">Recent Enrollments</p>
           <div className="space-y-2">
             {recentEnrollments.length === 0 && (
               <p className="text-sm py-4 text-center" style={{ color: "var(--text-3)" }}>No enrollments yet.</p>
@@ -152,8 +152,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Courses */}
-        <div className="card p-4">
-          <p className="section-label mb-3">Recent Courses</p>
+        <div className="card p-5">
+          <p className="section-label mb-4">Recent Courses</p>
           <div className="space-y-2">
             {recentCourses.length === 0 && (
               <p className="text-sm py-4 text-center" style={{ color: "var(--text-3)" }}>No courses yet.</p>

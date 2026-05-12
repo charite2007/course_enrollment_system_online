@@ -121,8 +121,8 @@ export default function FindCourses() {
                 <motion.div
                   key={c._id}
                   variants={cardAnim}
-                  whileHover={{ y: -3 }}
-                  className="card p-4 flex flex-col gap-2"
+                  whileHover={{ y: -5, scale: 1.01 }}
+                  className="card p-5 flex flex-col gap-3"
                 >
                   {/* Title row */}
                   <div className="flex items-start justify-between gap-2">
@@ -133,7 +133,7 @@ export default function FindCourses() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs line-clamp-2" style={{ color: "var(--text-3)" }}>{c.description}</p>
+                  <p className="text-sm line-clamp-2" style={{ color: "var(--text-3)" }}>{c.description}</p>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1.5">
@@ -162,7 +162,7 @@ export default function FindCourses() {
                   )}
 
                   {/* Actions */}
-                  <div className="mt-auto flex gap-2 pt-1">
+                  <div className="mt-auto flex gap-2 pt-2">
                     <button
                       onClick={() => navigate(`/courses/${c._id}`)}
                       className="btn-ghost flex-1 rounded-xl py-2 text-xs"

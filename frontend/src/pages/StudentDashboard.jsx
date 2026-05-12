@@ -64,34 +64,34 @@ export default function StudentDashboard() {
   const notStarted  = my.filter((e) => e.progress === 0);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {/* Greeting */}
       <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .32 }}>
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
           Welcome back, <span className="text-orange-400">{user?.Fullname?.split(" ")[0]}</span> 👋
         </h1>
-        <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>Here's your learning overview for today.</p>
+        <p className="mt-2 text-sm" style={{ color: "var(--text-3)" }}>Here's your learning overview for today.</p>
       </motion.div>
 
       {/* Stats */}
-      <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-3 gap-2 sm:gap-3">
+      <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-3 gap-4 sm:gap-5">
         {STAT_META.map((s) => <StatCard key={s.key} {...s} value={stats?.[s.key]} />)}
       </motion.div>
 
       {/* Continue Learning */}
       {inProgress.length > 0 && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .2 }}>
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <span className="section-label">Continue Learning</span>
             <button onClick={() => navigate("/my-courses")} className="text-xs font-bold text-orange-400 hover:text-orange-300 transition">View all →</button>
           </div>
-          <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-3 md:grid-cols-2">
+          <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-4 md:grid-cols-2">
             {inProgress.slice(0, 4).map((en) => (
               <motion.div
                 key={en._id}
                 variants={fadeUp}
                 whileHover={{ y: -2 }}
-                className="card p-4 flex flex-col gap-2 cursor-pointer"
+                className="card p-5 flex flex-col gap-3 cursor-pointer"
                 onClick={() => navigate(`/lesson/${en.courseId?._id}`)}
               >
                 <div className="flex items-start gap-3">
@@ -126,14 +126,14 @@ export default function StudentDashboard() {
       {/* Not Started */}
       {notStarted.length > 0 && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .3 }}>
-          <p className="section-label mb-3">Not Started Yet</p>
-          <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-2 md:grid-cols-2">
+          <p className="section-label mb-4">Not Started Yet</p>
+          <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-3 md:grid-cols-2">
             {notStarted.slice(0, 2).map((en) => (
               <motion.div
                 key={en._id}
                 variants={fadeUp}
                 whileHover={{ y: -2 }}
-                className="card flex items-center justify-between gap-3 px-4 py-3"
+                className="card flex items-center justify-between gap-4 px-5 py-4"
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-white">{en.courseId?.title}</p>

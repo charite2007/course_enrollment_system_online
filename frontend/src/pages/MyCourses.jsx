@@ -123,7 +123,7 @@ function Section({ title, items, navigate, onRemove, removing }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .3 }}>
       <p className="section-label mb-4">{title}</p>
-      <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-4 md:grid-cols-2">
+      <motion.div variants={stagger} initial="hidden" animate="show" className="grid gap-5 md:grid-cols-2">
         {items.map((en) => {
           const pct      = en.progress ?? 0;
           const done     = pct === 100;
@@ -133,8 +133,8 @@ function Section({ title, items, navigate, onRemove, removing }) {
             <motion.div
               key={en._id}
               variants={fadeUp}
-              whileHover={{ y: -2 }}
-              className="card p-5 flex flex-col gap-3"
+              whileHover={{ y: -4, scale: 1.01 }}
+              className="card p-5 flex flex-col gap-4"
             >
               {/* Title + badge */}
               <div className="flex items-start justify-between gap-2">

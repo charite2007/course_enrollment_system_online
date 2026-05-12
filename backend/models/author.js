@@ -9,9 +9,9 @@ const authorSchema = new mongoose.Schema(
     phone: { type: String, default: "" },
     bio: { type: String, default: "" },
     photo: { type: String, default: "" },
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "Author" }],
   },
   { timestamps: true }
 );
 
 export default mongoose.model("Author", authorSchema);
-

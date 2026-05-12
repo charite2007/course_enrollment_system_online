@@ -27,14 +27,14 @@ export function AuthProvider({ children }) {
     () => ({
       user,
       loading,
-      async login(payload) {
-        const data = await authApi.login(payload);
+      async register(payload) {
+        const data = await authApi.register(payload);
         authApi.setUser(data.user);
         setUserState(data.user);
         return data.user;
       },
-      async register(payload) {
-        const data = await authApi.register(payload);
+      async login(payload) {
+        const data = await authApi.login(payload);
         authApi.setUser(data.user);
         setUserState(data.user);
         return data.user;

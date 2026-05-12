@@ -14,6 +14,8 @@ import MyCourses from "./pages/MyCourses";
 import LessonView from "./pages/LessonView";
 import Certificates from "./pages/Certificates";
 import Settings from "./pages/Settings";
+import Chat from "./pages/Chat";
+import People from "./pages/People";
 import AdminCourses from "./pages/admin/AdminCourses";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminEnrollments from "./pages/admin/AdminEnrollments";
@@ -47,6 +49,8 @@ export default function App() {
           <Route path="/my-courses" element={<MyCourses />} />
           <Route path="/lesson/:id" element={<LessonView />} />
           <Route path="/certificates" element={<Certificates />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/people" element={<People />} />
 
           {/* Admin-only routes — hard guarded */}
           <Route element={<ProtectedRoute allowRole="admin" />}>

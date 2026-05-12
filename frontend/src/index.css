@@ -52,14 +52,15 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 #root { min-width: 0; overflow-x: hidden; }
+button, [role="button"], a { cursor: pointer; }
 
 body {
   margin: 0;
   background: var(--bg-base);
   color: var(--text-1);
   font-family: "Inter", system-ui, -apple-system, sans-serif;
-  font-size: 18px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   transition: background .25s, color .25s;
 }
@@ -113,16 +114,17 @@ body {
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 1.25rem;
-  transition: border-color .2s, box-shadow .2s, transform .15s;
+  border-radius: 1.5rem;
+  transition: border-color .2s, box-shadow .25s, transform .2s;
 }
 .card:hover {
-  border-color: rgba(255,255,255,.16);
-  box-shadow: 0 8px 32px -12px rgba(0,0,0,.4);
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 0 16px 48px -12px rgba(0,0,0,.5);
+  transform: translateY(-3px);
 }
 [data-theme="light"] .card:hover {
   border-color: rgba(0,0,0,.16);
-  box-shadow: 0 8px 32px -12px rgba(0,0,0,.12);
+  box-shadow: 0 16px 48px -12px rgba(0,0,0,.12);
 }
 
 /* ─── INPUT ──────────────────────────────────────────────────── */
@@ -130,9 +132,9 @@ body {
   width: 100%;
   background: var(--bg-input);
   border: 1px solid var(--border-input);
-  border-radius: .875rem;
-  padding: .65rem .9rem;
-  font-size: 1.0625rem;
+  border-radius: 1rem;
+  padding: .7rem 1rem;
+  font-size: 1rem;
   color: var(--text-1);
   outline: none;
   transition: border-color .15s, box-shadow .15s;
@@ -158,10 +160,10 @@ body {
   color: #fff;
   font-weight: 800;
   font-size: 1.0625rem;
-  border-radius: .875rem;
+  border-radius: 1rem;
   border: none;
   cursor: pointer;
-  transition: filter .15s, transform .12s, box-shadow .15s;
+  transition: filter .15s, transform .15s, box-shadow .15s;
   box-shadow: 0 4px 24px -6px var(--shadow-brand);
   position: relative;
   overflow: hidden;
@@ -175,7 +177,7 @@ body {
   transition: opacity .15s;
 }
 .btn-brand:hover:not(:disabled)::after { opacity: 1; }
-.btn-brand:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 28px -6px var(--shadow-brand); }
+.btn-brand:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-2px); box-shadow: 0 10px 32px -6px var(--shadow-brand); }
 .btn-brand:active:not(:disabled) { transform: translateY(0); filter: brightness(.97); }
 .btn-brand:disabled { opacity: .45; cursor: not-allowed; }
 
@@ -235,13 +237,13 @@ body {
 
 /* ─── STAT CARD ──────────────────────────────────────────────── */
 .stat-card {
-  border-radius: 1.25rem;
+  border-radius: 1.5rem;
   border: 1px solid var(--border);
-  padding: 1rem;
+  padding: 1.4rem;
   background: var(--bg-card);
   position: relative;
   overflow: hidden;
-  transition: transform .15s, box-shadow .15s;
+  transition: transform .2s, box-shadow .2s;
 }
 .stat-card::before {
   content: "";
@@ -250,7 +252,7 @@ body {
   background: radial-gradient(ellipse 80% 80% at 100% 0%, var(--accent-glow, transparent), transparent 70%);
   pointer-events: none;
 }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px -16px rgba(0,0,0,.4); }
+.stat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -16px rgba(0,0,0,.5); }
 
 /* ─── SKELETON LOADER ────────────────────────────────────────── */
 .skeleton {
@@ -281,8 +283,8 @@ tbody tr:hover { background: var(--bg-card-hover); }
   display: flex;
   align-items: center;
   gap: .875rem;
-  border-radius: .875rem;
-  padding: .6rem .875rem;
+  border-radius: 1rem;
+  padding: .75rem .9rem;
   font-size: 1.0625rem;
   font-weight: 600;
   color: var(--text-2);

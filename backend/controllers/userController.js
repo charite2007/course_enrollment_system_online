@@ -4,6 +4,7 @@ import Author from "../models/author.js";
 import Course from "../models/course.js";
 import Enrollment from "../models/enrollment.js";
 import Certificate from "../models/certificate.js";
+import Message from "../models/message.js";
 
 export async function getProfile(req, res) {
   try {
@@ -65,6 +66,7 @@ export async function deleteUser(req, res) {
     await Author.findByIdAndDelete(id);
     await Enrollment.deleteMany({ studentId: id });
     await Certificate.deleteMany({ studentId: id });
+    await Message.deleteMany({ sender: id });
     return res.json({ ok: true });
   } catch (e) {
     return res.status(500).json({ message: e.message || "Server error" });
@@ -111,6 +113,35 @@ export async function getStudentStats(req, res) {
       Enrollment.countDocuments({ studentId, progress: { $gt: 0, $lt: 100 } }),
     ]);
     return res.json({ stats: { enrolledCount, inProgressCount, certificatesCount } });
+  } catch (e) {
+    return res.status(500).json({ message: e.message || "Server error" });
+  }
+}
+
+export async function getPublicUsers(req, res) {
+  try {
+    const users = await Author.find({ emailVerified: true })
+      .select("Fullname photo bio role following createdAt")
+      .sort({ createdAt: -1 });
+    return res.json({ users });
+  } catch (e) {
+    return res.status(500).json({ message: e.message || "Server error" });
+  }
+}
+
+export async function followUser(req, res) {
+  try {
+    const { id } = req.params;
+    if (String(id) === String(req.user._id)) return res.status(400).json({ message: "Cannot follow yourself" });
+    const me = await Author.findById(req.user._id);
+    const alreadyFollowing = me.following.some((f) => String(f) === String(id));
+    if (alreadyFollowing) {
+      me.following = me.following.filter((f) => String(f) !== String(id));
+    } else {
+      me.following.push(id);
+    }
+    await me.save();
+    return res.json({ following: me.following });
   } catch (e) {
     return res.status(500).json({ message: e.message || "Server error" });
   }

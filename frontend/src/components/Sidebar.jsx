@@ -8,6 +8,8 @@ const studentLinks = [
   { to: "/find-courses", label: "Find Courses", icon: "🔍" },
   { to: "/my-courses", label: "My Courses", icon: "📚" },
   { to: "/certificates", label: "Certificates", icon: "🏆" },
+  { to: "/chat", label: "Community", icon: "💬" },
+  { to: "/people", label: "People", icon: "👥" },
   { to: "/settings", label: "Settings", icon: "⚙" },
 ];
 
@@ -16,6 +18,8 @@ const adminLinks = [
   { to: "/admin/courses", label: "Courses", icon: "📖" },
   { to: "/admin/users", label: "Users", icon: "👥" },
   { to: "/admin/enrollments", label: "Enrollments", icon: "📋" },
+  { to: "/chat", label: "Community", icon: "💬" },
+  { to: "/people", label: "People", icon: "🌐" },
   { to: "/settings", label: "Settings", icon: "⚙" },
 ];
 
