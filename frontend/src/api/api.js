@@ -151,20 +151,4 @@ export const enrollments = {
   },
 };
 
-export const chat = {
-  async getMessages(room = "global") {
-    const { data } = await api.get(`/api/chat?room=${room}`);
-    return data;
-  },
-};
 
-export const people = {
-  async getAll() {
-    const { data } = await api.get("/api/users/people");
-    return data;
-  },
-  async follow(id) {
-    const { data } = await api.put(`/api/users/${id}/follow`);
-    return data;
-  },
-};

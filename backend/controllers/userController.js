@@ -4,7 +4,6 @@ import Author from "../models/author.js";
 import Course from "../models/course.js";
 import Enrollment from "../models/enrollment.js";
 import Certificate from "../models/certificate.js";
-import Message from "../models/message.js";
 
 export async function getProfile(req, res) {
   try {
@@ -66,7 +65,6 @@ export async function deleteUser(req, res) {
     await Author.findByIdAndDelete(id);
     await Enrollment.deleteMany({ studentId: id });
     await Certificate.deleteMany({ studentId: id });
-    await Message.deleteMany({ sender: id });
     return res.json({ ok: true });
   } catch (e) {
     return res.status(500).json({ message: e.message || "Server error" });
